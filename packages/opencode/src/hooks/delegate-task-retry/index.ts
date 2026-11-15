@@ -75,7 +75,7 @@ export function detectDelegateTaskError(output: string): DetectedError | null {
 }
 
 function extractAvailableList(output: string): string | null {
-  const availableMatch = output.match(/Available[^:]*:(.+)$/m)
+  const availableMatch = output.match(/Available[^:]*:\s*(.+)$/m)
   return availableMatch ? availableMatch[1].trim() : null
 }
 

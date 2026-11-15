@@ -28,12 +28,8 @@ function loadAllScores(): ScoreResult[] {
         scores.push(score);
       }
     } else if (entry.endsWith(".json")) {
-      try {
-        const score = JSON.parse(readFileSync(entryPath, "utf-8"));
-        scores.push(score);
-      } catch {
-        // File changed between listing and read — skip it.
-      }
+      const score = JSON.parse(readFileSync(entryPath, "utf-8"));
+      scores.push(score);
     }
   }
   
