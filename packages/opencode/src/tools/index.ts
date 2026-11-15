@@ -54,10 +54,9 @@ export type {
 
 import { glob } from "./glob"
 import { grep } from "./grep"
-import { interactive_bash, startBackgroundCheck } from "./interactive-bash"
-import { skill, createSkillTool } from "./skill"
-import { createSkillMcpTool } from "./skill-mcp"
-import { slashcommand, createSlashcommandTool, discoverCommandsSync } from "./slashcommand"
+import { interactive_bash } from "./interactive-bash"
+import { skill } from "./skill"
+import { slashcommand } from "./slashcommand"
 
 export { glob } from "./glob"
 export { grep } from "./grep"

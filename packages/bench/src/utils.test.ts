@@ -152,7 +152,6 @@ describe("computeBaselineComparison", () => {
       test("#then should log warning when scoring metadata is missing", () => {
         // #given
         const baseline = createBaseline()
-        const consoleSpy = console.warn as any
         let warnCalled = false
         let warnMessage = ""
 

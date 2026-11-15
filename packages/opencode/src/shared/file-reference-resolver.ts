@@ -40,13 +40,14 @@ function readFileContent(resolvedPath: string): string {
     return `[file not found: ${resolvedPath}]`
   }
 
-  const stat = statSync(resolvedPath)
-  if (stat.isDirectory()) {
-    return `[cannot read directory: ${resolvedPath}]`
+  try {
+    return readFileSync(resolvedPath, "utf-8")
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EISDIR") {
+      return `[cannot read directory: ${resolvedPath}]`
+    }
+    throw error
   }
-
-  const content = readFileSync(resolvedPath, "utf-8")
-  return content
 }
 
 export async function resolveFileReferencesInText(

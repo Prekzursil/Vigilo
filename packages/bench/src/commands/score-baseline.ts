@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
-import { ensureDirs, SOURCES_DIR, TRUTH_DIR, BASELINES_DIR, loadRegistry, saveRegistry, loadBaseline, log, error } from "../utils.js";
+import { ensureDirs, TRUTH_DIR, BASELINES_DIR, loadRegistry, saveRegistry, log, error } from "../utils.js";
 import { scoreBaseline } from "../scorer/baseline-scorer.js";
 import type { ScaBenchBaseline } from "../types.js";
 

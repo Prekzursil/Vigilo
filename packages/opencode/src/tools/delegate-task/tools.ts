@@ -627,7 +627,7 @@ To continue this session: session_id="${task.sessionID}"`
             },
           })
         } catch (promptError) {
-          if (toastManager && taskId !== undefined) {
+          if (toastManager) {
             toastManager.removeTask(taskId)
           }
           const errorMessage = promptError instanceof Error ? promptError.message : String(promptError)

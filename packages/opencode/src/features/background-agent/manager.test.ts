@@ -1335,7 +1335,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         parentMessageID: "parent-message",
       }
 
-      const task1 = await manager.launch(input)
+      await manager.launch(input)
       const task2 = await manager.launch(input)
 
       // Wait for first task to start
@@ -1393,7 +1393,7 @@ describe("BackgroundManager - Non-blocking Queue Integration", () => {
         parentMessageID: "parent-message",
       }
 
-      const task1 = await manager.launch(input)
+      await manager.launch(input)
       const task2 = await manager.launch(input)
       const task3 = await manager.launch(input)
 

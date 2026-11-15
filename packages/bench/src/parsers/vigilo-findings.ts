@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, existsSync } from "fs";
-import { resolve, basename, relative } from "path";
+import { resolve, basename } from "path";
 import type { VigiloFinding, Severity } from "../types.js";
 
 function parseSeverity(dir: string): Severity {

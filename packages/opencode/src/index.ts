@@ -34,7 +34,6 @@ import {
   createCallVigiloAgent,
   interactive_bash,
   startBackgroundCheck,
-  lspManager,
 } from "./tools"
 import { BackgroundManager } from "./features/background-agent"
 import { SkillMcpManager } from "./features/skill-mcp-manager"

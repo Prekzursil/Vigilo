@@ -1,5 +1,5 @@
 import { createOpencodeClient, type OpencodeClient } from "@opencode-ai/sdk/client";
-import { spawn, exec, type ChildProcess } from "child_process";
+import { spawn, type ChildProcess } from "child_process";
 import { existsSync, readdirSync, readFileSync } from "fs";
 import { join } from "path";
 import { platform } from "os";
@@ -199,18 +199,30 @@ function openTerminalWithOpencode(sourceDir: string): void {
   const os = platform();
   
   if (os === "win32") {
-    exec(`start cmd /k "cd /d ${sourceDir} && opencode"`, { shell: "cmd.exe" });
+    const safeDir = sourceDir.replace(/"/g, "");
+    const child = spawn("cmd.exe", ["/k", `cd /d "${safeDir}" && opencode`], {
+      detached: true,
+      stdio: "ignore",
+    });
+    child.on("error", () => {});
+    child.unref();
   } else if (os === "darwin") {
-    exec(`osascript -e 'tell app "Terminal" to do script "cd ${sourceDir} && opencode"'`);
+    const script = `tell application "Terminal" to do script ${JSON.stringify(`cd ${sourceDir} && opencode`)}`;
+    const child = spawn("osascript", ["-e", script], { detached: true, stdio: "ignore" });
+    child.on("error", () => {});
+    child.unref();
   } else {
+    const shq = (s: string) => `'${s.replace(/'/g, "'\\''")}'`;
     const terminals = ["gnome-terminal", "konsole", "xfce4-terminal", "xterm"];
     for (const term of terminals) {
       try {
-        if (term === "gnome-terminal") {
-          exec(`${term} -- bash -c "cd ${sourceDir} && opencode; exec bash"`);
-        } else {
-          exec(`${term} -e "bash -c 'cd ${sourceDir} && opencode; exec bash'"`);
-        }
+        const shellCmd = `cd ${shq(sourceDir)} && opencode; exec bash`;
+        const child =
+          term === "gnome-terminal"
+            ? spawn(term, ["--", "bash", "-c", shellCmd], { detached: true, stdio: "ignore" })
+            : spawn(term, ["-e", `bash -c ${shq(shellCmd)}`], { detached: true, stdio: "ignore" });
+        child.on("error", () => {});
+        child.unref();
         break;
       } catch {
         continue;

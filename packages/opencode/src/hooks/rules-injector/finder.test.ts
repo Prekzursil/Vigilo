@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "bun:test";
-import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { findProjectRoot, findRuleFiles } from "./finder";
 
 describe("findRuleFiles", () => {
-  const TEST_DIR = join(tmpdir(), `rules-injector-test-${Date.now()}`);
+  const TEST_DIR = mkdtempSync(join(tmpdir(), "rules-injector-test-"));
   const homeDir = join(TEST_DIR, "home");
 
   beforeEach(() => {
@@ -325,7 +325,7 @@ describe("findRuleFiles", () => {
 });
 
 describe("findProjectRoot", () => {
-  const TEST_DIR = join(tmpdir(), `project-root-test-${Date.now()}`);
+  const TEST_DIR = mkdtempSync(join(tmpdir(), "project-root-test-"));
 
   beforeEach(() => {
     mkdirSync(TEST_DIR, { recursive: true });

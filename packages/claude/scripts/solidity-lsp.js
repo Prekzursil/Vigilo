@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 // Cross-platform launcher for Solidity Language Server
 const { spawn, execSync } = require('child_process');
-const path = require('path');
 
 const PACKAGE_NAME = '@nomicfoundation/solidity-language-server';
 const isWindows = process.platform === 'win32';
