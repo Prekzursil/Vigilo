@@ -73,7 +73,7 @@ function formatAvailableMcps(skills: LoadedSkill[]): string {
 
 function parseArguments(argsJson: string | Record<string, unknown> | undefined): Record<string, unknown> {
   if (!argsJson) return {}
-  if (typeof argsJson === "object" && argsJson !== null) {
+  if (typeof argsJson === "object") {
     return argsJson
   }
   try {

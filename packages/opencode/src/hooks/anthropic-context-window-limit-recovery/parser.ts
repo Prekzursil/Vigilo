@@ -11,10 +11,10 @@ interface AnthropicErrorData {
 
 const TOKEN_LIMIT_PATTERNS = [
   /(\d+)\s*tokens?\s*>\s*(\d+)\s*maximum/i,
-  /prompt.*?(\d+).*?tokens.*?exceeds.*?(\d+)/i,
-  /(\d+).*?tokens.*?limit.*?(\d+)/i,
-  /context.*?length.*?(\d+).*?maximum.*?(\d+)/i,
-  /max.*?context.*?(\d+).*?but.*?(\d+)/i,
+  /prompt[^\d]*?(\d+)[^\d]*?tokens[^\d]*?exceeds[^\d]*?(\d+)/i,
+  /(\d+)[^\d]*?tokens[^\d]*?limit[^\d]*?(\d+)/i,
+  /context[^\d]*?length[^\d]*?(\d+)[^\d]*?maximum[^\d]*?(\d+)/i,
+  /max[^\d]*?context[^\d]*?(\d+)[^\d]*?but[^\d]*?(\d+)/i,
 ]
 
 const TOKEN_LIMIT_KEYWORDS = [
@@ -133,9 +133,9 @@ export function parseAnthropicTokenLimitError(err: unknown): ParsedTokenLimitErr
     try {
       const jsonPatterns = [
         // Greedy match to last } for nested JSON
-        /data:\s*(\{[\s\S]*\})\s*$/m,
+        /data:\s*(\{[\s\S]*\})/,
         /(\{"type"\s*:\s*"error"[\s\S]*\})/,
-        /(\{[\s\S]*"error"[\s\S]*\})/,
+        /(\{[\s\S]*\})/,
       ]
 
       for (const pattern of jsonPatterns) {

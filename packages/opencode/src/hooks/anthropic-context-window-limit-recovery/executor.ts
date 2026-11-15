@@ -7,8 +7,6 @@ import type { ExperimentalConfig } from "../../config/schema";
 import { RETRY_CONFIG, TRUNCATE_CONFIG } from "./types";
 
 import {
-  findLargestToolResult,
-  truncateToolResult,
   truncateUntilTargetTokens,
 } from "./storage";
 import {
@@ -428,7 +426,7 @@ export async function executeCompact(
             })
             .catch(() => {});
 
-          const summarizeBody = { providerID, modelID, auto: true }
+          const summarizeBody = { providerID, modelID, auto: true };
           await (client as Client).session.summarize({
             path: { id: sessionID },
             body: summarizeBody as never,

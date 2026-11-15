@@ -73,9 +73,6 @@ function detectConfigFormat(): { format: ConfigFormat; path: string } {
 
 function parseConfig(path: string): OpenCodeConfig | null {
   try {
-    const stat = statSync(path)
-    if (stat.size === 0) return null
-
     const content = readFileSync(path, "utf-8")
     if (content.trim().length === 0) return null
 
@@ -191,34 +188,31 @@ export function writeVigiloConfig(installConfig: InstallConfig): ConfigMergeResu
   try {
     const newConfig = generateModelConfig(installConfig)
 
-    if (existsSync(vigiloConfigPath)) {
-      try {
-        const stat = statSync(vigiloConfigPath)
-        const content = readFileSync(vigiloConfigPath, "utf-8")
-
-        if (stat.size === 0 || content.trim().length === 0) {
-          writeFileSync(vigiloConfigPath, JSON.stringify(newConfig, null, 2) + "\n")
-          return { success: true, configPath: vigiloConfigPath }
+    let existing: Record<string, unknown> | null = null
+    try {
+      const content = readFileSync(vigiloConfigPath, "utf-8")
+      if (content.trim().length > 0) {
+        try {
+          const parsed = JSON.parse(content) as Record<string, unknown>
+          if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+            existing = parsed
+          }
+        } catch (parseErr) {
+          if (parseErr instanceof SyntaxError) {
+            writeFileSync(vigiloConfigPath, JSON.stringify(newConfig, null, 2) + "\n")
+            return { success: true, configPath: vigiloConfigPath }
+          }
+          throw parseErr
         }
-
-        const existing = JSON.parse(content) as Record<string, unknown>
-        if (!existing || typeof existing !== "object" || Array.isArray(existing)) {
-          writeFileSync(vigiloConfigPath, JSON.stringify(newConfig, null, 2) + "\n")
-          return { success: true, configPath: vigiloConfigPath }
-        }
-
-        const merged = deepMerge(existing, newConfig)
-        writeFileSync(vigiloConfigPath, JSON.stringify(merged, null, 2) + "\n")
-      } catch (parseErr) {
-        if (parseErr instanceof SyntaxError) {
-          writeFileSync(vigiloConfigPath, JSON.stringify(newConfig, null, 2) + "\n")
-          return { success: true, configPath: vigiloConfigPath }
-        }
-        throw parseErr
       }
-    } else {
-      writeFileSync(vigiloConfigPath, JSON.stringify(newConfig, null, 2) + "\n")
+    } catch (readErr) {
+      if ((readErr as NodeJS.ErrnoException).code !== "ENOENT") {
+        throw readErr
+      }
     }
+
+    const merged = existing ? deepMerge(existing, newConfig) : newConfig
+    writeFileSync(vigiloConfigPath, JSON.stringify(merged, null, 2) + "\n")
 
     return { success: true, configPath: vigiloConfigPath }
   } catch (err) {

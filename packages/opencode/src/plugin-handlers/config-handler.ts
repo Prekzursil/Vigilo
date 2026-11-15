@@ -1,8 +1,6 @@
 import { createBuiltinAgents, listAvailableAgents } from "../agents"
 import { loadBuiltinCommands } from "../features/builtin-commands"
 import {
-  discoverOpencodeGlobalSkills,
-  discoverOpencodeProjectSkills,
 } from "../features/opencode-skill-loader"
 import type { VigiloConfig } from "../plugin-config"
 import { log, getOpenCodeConfigPaths } from "../shared"
@@ -69,19 +67,6 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         )
       }
     }
-
-    const [
-      discoveredOpencodeGlobalSkills,
-      discoveredOpencodeProjectSkills,
-    ] = await Promise.all([
-      discoverOpencodeGlobalSkills(),
-      discoverOpencodeProjectSkills(),
-    ])
-
-    const allDiscoveredSkills = [
-      ...discoveredOpencodeProjectSkills,
-      ...discoveredOpencodeGlobalSkills,
-    ]
 
     const builtinAgents = await createBuiltinAgents({
       disabledAgents: pluginConfig.disabled_auditors,

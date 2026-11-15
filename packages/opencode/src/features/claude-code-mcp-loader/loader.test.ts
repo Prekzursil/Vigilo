@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, afterEach } from "bun:test"
-import { mkdirSync, writeFileSync, rmSync } from "fs"
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "fs"
 import { join } from "path"
 import { tmpdir } from "os"
 
-const TEST_DIR = join(tmpdir(), "mcp-loader-test-" + Date.now())
+const TEST_DIR = mkdtempSync(join(tmpdir(), "mcp-loader-test-"))
 
 describe("getSystemMcpServerNames", () => {
   beforeEach(() => {

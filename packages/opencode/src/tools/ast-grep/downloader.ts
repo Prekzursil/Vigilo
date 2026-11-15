@@ -1,10 +1,7 @@
-import { existsSync, mkdirSync, chmodSync, unlinkSync, createWriteStream, statSync } from "node:fs"
+import { existsSync, mkdirSync, chmodSync, unlinkSync } from "node:fs"
 import { join } from "node:path"
 import { homedir } from "node:os"
 import { createRequire } from "node:module"
-import { pipeline } from "node:stream/promises"
-import { createGunzip } from "node:zlib"
-import { Readable } from "node:stream"
 
 const REPO = "ast-grep/ast-grep"
 const DEFAULT_VERSION = "0.40.0"
