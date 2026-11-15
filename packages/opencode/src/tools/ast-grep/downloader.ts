@@ -77,7 +77,12 @@ export async function downloadAstGrep(version: string = DEFAULT_VERSION): Promis
 
   const { arch, os } = platformInfo
   const assetName = `app-${arch}-${os}.zip`
-  const downloadUrl = `https://github.com/${REPO}/releases/download/${version}/${assetName}`
+  const downloadUrl = new URL(
+    `https://github.com/${REPO}/releases/download/${version}/${assetName}`
+  )
+  if (downloadUrl.protocol !== "https:") {
+    throw new Error(`Refusing non-HTTPS download URL: ${downloadUrl.protocol}`)
+  }
 
   console.log(`[vigilo] Downloading ast-grep binary...`)
 
