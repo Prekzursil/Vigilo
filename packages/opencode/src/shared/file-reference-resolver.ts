@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from "fs"
+import { existsSync, readFileSync } from "fs"
 import { join, isAbsolute } from "path"
 
 interface FileMatch {

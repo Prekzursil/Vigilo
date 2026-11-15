@@ -2,17 +2,11 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import type { createOpencodeClient } from "@opencode-ai/sdk"
 import type { ExperimentalConfig } from "../../config/schema"
 import {
-  findEmptyMessages,
-  findEmptyMessageByIndex,
   findMessageByIndexNeedingThinking,
-  findMessagesWithEmptyTextParts,
   findMessagesWithOrphanThinking,
   findMessagesWithThinkingBlocks,
-  findMessagesWithThinkingOnly,
-  injectTextPart,
   prependThinkingPart,
   readParts,
-  replaceEmptyTextParts,
   stripThinkingParts,
 } from "./storage"
 import type { MessageData, ResumeConfig } from "./types"
@@ -248,7 +242,6 @@ async function recoverThinkingDisabledViolation(
   return anySuccess
 }
 
-const PLACEHOLDER_TEXT = "[user interrupted]"
 
 // NOTE: recoverEmptyContentMessage was removed (2026-11-14) — defined but never
 // called; the dispatch table routes no error type to it. Its orphaned storage

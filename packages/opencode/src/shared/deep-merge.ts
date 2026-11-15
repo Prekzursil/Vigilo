@@ -29,7 +29,7 @@ export function deepMerge<T extends Record<string, unknown>>(
 ): T | undefined {
   if (!base) return override;
   if (!override) return base;
-  if (depth > MAX_DEPTH) return override ?? base;
+  if (depth > MAX_DEPTH) return override;
 
   const result = { ...base } as Record<string, unknown>;
 

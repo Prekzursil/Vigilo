@@ -59,6 +59,10 @@ async function extractZip(zipPath: string, destDir: string): Promise<void> {
 }
 
 export async function downloadAstGrep(version: string = DEFAULT_VERSION): Promise<string | null> {
+  if (!/^[\w.+-]+$/.test(version)) {
+    throw new Error(`Invalid ast-grep version: ${version}`)
+  }
+
   const platformKey = `${process.platform}-${process.arch}`
   const platformInfo = PLATFORM_MAP[platformKey]
 
